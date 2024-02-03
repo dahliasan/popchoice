@@ -1,5 +1,5 @@
 // Movies info
-export default [
+const movies = [
   {
     title: 'Avatar: The Way of the Water',
     releaseYear: '2022',
@@ -55,3 +55,5 @@ export default [
       'RRR (3 hr 7 min): A fictitious story about two legendary revolutionaries and their journey away from home before they started fighting for their country in the 1920s. South Indian action, drama film released in 2022. Directed by S. S. Rajamouli. Written by Vijayendra Prasad, S. S. Rajamouli and Sai Madhav Burra. Starring N. T. Rama Rao Jr., Ram Charan and Ajay Devgn. Rated 7.8 on IMDB',
   },
 ]
+
+export default movies
