@@ -43,7 +43,6 @@ export function RadioButtonField({
               {fieldData.options.map((option, index) => (
                 <FormItem key={index} className=''>
                   <FormControl>
-                    {/* <RadioGroupItem value={option.value} /> */}
                     <RadioGroupButtonItem
                       value={option.value}
                       checked={field.value === option.value}
@@ -51,7 +50,6 @@ export function RadioButtonField({
                       {option.label}
                     </RadioGroupButtonItem>
                   </FormControl>
-                  {/* <FormLabel className='font-normal'>{option.label}</FormLabel> */}
                 </FormItem>
               ))}
             </RadioGroup>
