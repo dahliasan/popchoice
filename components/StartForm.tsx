@@ -10,7 +10,7 @@ import InputField from './form/InputField'
 import { fields } from '@/db/formFields'
 import { RadioButtonField } from './form/RadioButtonField'
 
-import { useChat, useCompletion } from 'ai/react'
+import { useCompletion } from 'ai/react'
 
 const formObject = fields.reduce<Record<string, z.ZodString>>((acc, field) => {
   acc[field.id] = z.string()
@@ -28,7 +28,9 @@ const defaultValues = fields.reduce<Record<string, string>>((acc, field) => {
 }, {})
 
 export default function StartForm() {
-  const { complete, isLoading, handleSubmit } = useCompletion()
+  const { complete, isLoading } = useCompletion({
+    id: 'start-form',
+  })
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
