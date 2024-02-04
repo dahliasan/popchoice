@@ -1,5 +1,5 @@
 import Hero from '@/components/Hero'
-import ScreenOne from '@/components/ScreenOne'
+import WelcomeForm from '@/components/WelcomeForm'
 
 export default function Home() {
   return (
@@ -9,7 +9,7 @@ export default function Home() {
           <h1 className='text-center'>Popchoice</h1>
         </Hero>
 
-        <ScreenOne />
+        <WelcomeForm />
       </div>
     </main>
   )
