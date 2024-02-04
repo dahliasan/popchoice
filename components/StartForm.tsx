@@ -10,6 +10,8 @@ import InputField from './form/InputField'
 import { fields } from '@/db/formFields'
 import { RadioButtonField } from './form/RadioButtonField'
 
+import { useChat, useCompletion } from 'ai/react'
+
 const formObject = fields.reduce<Record<string, z.ZodString>>((acc, field) => {
   acc[field.id] = z.string()
   return acc
@@ -26,6 +28,8 @@ const defaultValues = fields.reduce<Record<string, string>>((acc, field) => {
 }, {})
 
 export default function StartForm() {
+  const { complete, isLoading, handleSubmit } = useCompletion()
+
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -33,10 +37,18 @@ export default function StartForm() {
   })
 
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values)
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    // Combine all the answers into a string
+    const answer = Object.keys(values)
+      .map((key) => `${values[key]}`)
+      .join('\n')
+
+    const completion = await complete(answer)
+    // parse completion json string
+    const completionObject = completion && JSON.parse(completion)
+    console.log(completionObject)
+
+    form.reset()
   }
 
   return (
