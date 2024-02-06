@@ -1,6 +1,6 @@
-'use client'
 import Hero from '@/components/Hero'
 import StartForm from '@/components/StartForm'
+import { Suspense } from 'react'
 
 export default function Page() {
   return (
@@ -11,7 +11,9 @@ export default function Page() {
         </Hero>
 
         <div className='grid w-full max-w-sm items-center gap-4 font-light'>
-          <StartForm />
+          <Suspense>
+            <StartForm />
+          </Suspense>
         </div>
       </div>
     </>
