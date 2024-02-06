@@ -36,3 +36,11 @@ export const retriever = vectorStore.asRetriever({
 export const llm = new ChatOpenAI({
   openAIApiKey: process.env.OPENAI_API_KEY,
 })
+
+export const tmdbOptions = {
+  method: 'GET',
+  headers: {
+    accept: 'application/json',
+    Authorization: `Bearer ${process.env.TMDB_ACCESS_TOKEN_AUTH}`,
+  },
+}
