@@ -29,7 +29,7 @@ export default function RootLayout({
       <body
         className={cn(
           'text-white',
-          'min-h-screen bg-indigo-950 py-8',
+          'bg-indigo-950',
           robotoSlab.className,
           carterOne.variable
         )}

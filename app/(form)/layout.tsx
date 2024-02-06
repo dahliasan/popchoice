@@ -3,5 +3,9 @@ export default function FormLayout({
 }: {
   children: React.ReactNode
 }) {
-  return <main className='grid place-content-center'>{children}</main>
+  return (
+    <main className='min-h-screen grid place-content-center py-8'>
+      {children}
+    </main>
+  )
 }
