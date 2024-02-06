@@ -11,9 +11,11 @@ import { fields } from '@/db/formFields'
 import { RadioButtonField } from './form/RadioButtonField'
 
 import { useCompletion } from 'ai/react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 
 import { useCompletionStore } from '@/lib/store'
+
+import { useState } from 'react'
 
 const formObject = fields.reduce<Record<string, z.ZodString>>((acc, field) => {
   acc[field.id] = z.string()
@@ -32,8 +34,11 @@ const defaultValues = fields.reduce<Record<string, string>>((acc, field) => {
 
 export default function StartForm() {
   const { complete, isLoading } = useCompletion()
-
+  const searchParams = useSearchParams()
+  const numberOfPeople = searchParams.get('numberOfPeople')
   const router = useRouter()
+  const [submissions, setSubmissions] = useState<string[]>([])
+  const [currentPerson, setCurrentPerson] = useState(1)
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
@@ -42,13 +47,22 @@ export default function StartForm() {
   })
 
   // 2. Define a submit handler.
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmitFinal(values: z.infer<typeof formSchema>) {
     // Combine all the answers into a string
     const answer = Object.keys(values)
       .map((key) => `${values[key]}`)
       .join('\n')
 
-    const completion = await complete(answer)
+    // Add to submissions
+    setSubmissions([...submissions, answer])
+
+    if (currentPerson < Number(numberOfPeople)) {
+      setCurrentPerson((prev) => prev + 1)
+      return form.reset()
+    }
+
+    // 3. Send the answer to the AI
+    const completion = await complete(submissions.join('\n\n'))
 
     if (completion) {
       const results = JSON.parse(completion)
@@ -61,7 +75,8 @@ export default function StartForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6'>
+      <h3 className='text-center'>{currentPerson}</h3>
+      <form onSubmit={form.handleSubmit(onSubmitFinal)} className='space-y-6'>
         {fields.map((field, index) => {
           switch (field.type) {
             case 'text':
@@ -78,9 +93,22 @@ export default function StartForm() {
         })}
 
         <Button type='submit' className='w-full' disabled={isLoading}>
-          {isLoading ? 'Loading...' : 'Submit'}
+          {renderSubmitButtonText(
+            isLoading,
+            currentPerson === Number(numberOfPeople)
+          )}
         </Button>
       </form>
     </Form>
   )
+}
+
+const renderSubmitButtonText = (isLoading: boolean, isLastPerson: boolean) => {
+  if (isLoading) {
+    return 'Loading...'
+  }
+  if (isLastPerson) {
+    return 'Submit'
+  }
+  return 'Next Person'
 }
