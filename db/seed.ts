@@ -8,6 +8,7 @@ import { OpenAIEmbeddings } from '@langchain/openai'
 import { Document } from '@langchain/core/documents'
 
 import * as fs from 'fs'
+import { MovieMetadata } from '@/types/types'
 
 const { genres } = JSON.parse(fs.readFileSync('./db/genres.json', 'utf8'))
 const openAIApiKey = process.env.OPENAI_API_KEY
@@ -39,29 +40,13 @@ async function getMovies() {
 
 async function getTopRatedMovies() {
   try {
-    let allResults: Record<string, any>[] = []
+    let allResults: MovieMetadata[] = []
 
     for (let page = 1; page <= 5; page++) {
       const res = await fetch(
         `https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=${page}`,
         tmdbOptions
       )
-      // const options = {
-      //   method: 'GET',
-      //   headers: {
-      //     accept: 'application/json',
-      //     Authorization:
-      //       'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIzYzRkZjllMTQ3MjE2MzU5ZjlmOWUzYzM0ZTVjZjI3NyIsInN1YiI6IjYyYjdhNmVkMmIxMTNkMDA1MTk3ZjY5YiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.KoXgowvy5i1B_MVZSjxr-mHRV1WuWt4sbXO7LETQgJs',
-      //   },
-      // }
-
-      // fetch(
-      //   'https://api.themoviedb.org/3/movie/popular?language=en-US&page=2',
-      //   options
-      // )
-      //   .then((response) => response.json())
-      //   .then((response) => console.log(response))
-      //   .catch((err) => console.error(err))
 
       const data = await res.json()
       const { results } = data
@@ -79,11 +64,11 @@ async function getTopRatedMovies() {
       allResults = allResults.concat(results)
     }
 
-    const docs = allResults.map((movie: Record<string, any>) => {
+    const docs = allResults.map((movie: MovieMetadata) => {
       return new Document({
         pageContent: `${movie.title}: ${
           movie.release_date
-        } | ${movie.genre_names.join(', ')} | ${movie.overview} `,
+        } | ${movie.genre_names?.join(', ')} | ${movie.overview} `,
         metadata: {
           ...movie,
           type: 'top_rated',
