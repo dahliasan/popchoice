@@ -4,6 +4,7 @@ import { useCompletionStore } from '@/lib/store'
 import Image from 'next/image'
 import { Button } from './ui/button'
 import { cn } from '@/lib/utils'
+import Link from 'next/link'
 
 const Results = () => {
   const results = useCompletionStore((state) => state.results)
@@ -63,6 +64,9 @@ const Results = () => {
         >
           Next Movie
         </Button>
+        <Link href='/' className='order-3'>
+          <Button variant={'link'}>Start Again</Button>
+        </Link>
       </div>
     </div>
   )
