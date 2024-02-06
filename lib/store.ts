@@ -1,11 +1,10 @@
 import { create } from 'zustand'
 import { persist, createJSONStorage } from 'zustand/middleware'
-import { movieResultsSchema } from '@/types/FormTypes'
+import { MovieResult } from '@/types/types'
 import { z } from 'zod'
 
-type Results = z.infer<typeof movieResultsSchema>
 type State = {
-  results: Results
+  results: MovieResult[]
 }
 
 type Action = {
