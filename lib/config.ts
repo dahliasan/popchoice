@@ -19,7 +19,14 @@ if (!url) throw new Error(`Expected env var SUPABASE_URL`)
 export const supabase = createClient(url, privateKey)
 
 /** Langchain config */
-const embeddings = new OpenAIEmbeddings()
+const embeddings = new OpenAIEmbeddings({
+  configuration: {
+    baseURL: 'https://oai.hconeai.com/v1',
+    defaultHeaders: {
+      'Helicone-Auth': `Bearer ${process.env.HELICONE_API_KEY}`,
+    },
+  },
+})
 export const vectorStore = new SupabaseVectorStore(embeddings, {
   client: supabase,
   tableName: 'movies',
@@ -35,6 +42,13 @@ export const retriever = vectorStore.asRetriever({
 
 export const llm = new ChatOpenAI({
   openAIApiKey: process.env.OPENAI_API_KEY,
+
+  configuration: {
+    baseURL: 'https://oai.hconeai.com/v1',
+    defaultHeaders: {
+      'Helicone-Auth': `Bearer ${process.env.HELICONE_API_KEY}`,
+    },
+  },
 })
 
 export const tmdbOptions = {
