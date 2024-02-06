@@ -1,4 +1,4 @@
-import { Field } from '@/types/FormTypes'
+import { Field } from '@/types/types'
 export const fields: Field[] = [
   {
     id: 'favourite_movie',

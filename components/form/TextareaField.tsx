@@ -1,4 +1,4 @@
-import { TextFieldType } from '@/types/FormTypes'
+import { TextFieldType } from '@/types/types'
 import { UseFormReturn } from 'react-hook-form'
 import {
   FormControl,

@@ -17,7 +17,7 @@ import {
   RadioGroupButtonItem,
   RadioGroupItem,
 } from '@/components/ui/radio-group'
-import { RadioFieldType } from '@/types/FormTypes'
+import { RadioFieldType } from '@/types/types'
 import { cn } from '@/lib/utils'
 
 export function RadioButtonField({
