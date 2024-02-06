@@ -12,13 +12,13 @@ import {
 
 export const runtime = 'edge'
 
-const answerTemplate = `You are a friendly and expert movie recommender. Based on the user's response to a quiz and a filtered list of the most relevant movies, you will recommend the top 3 movies that the user or the group of users should watch. You will also provide a short explanation in 1 sentence why the user(s) would enjoy each movie.
+const answerTemplate = `You are a friendly and expert movie recommender. Based on the user's response to a quiz and a filtered list of the most relevant movies, you will recommend the top 3 movies that the user or the group of users should watch. You will also provide a short, friendly and slightly humorous explanation in 1 sentence why the user(s) would enjoy each movie.
 
 {format_instructions}
 
 If none of the movies are suitable, return an empty array.
 
-User(s) quiz response: {input}
+User(s) quiz response (each person separated by /n/n): {input}
 
 Most relevant movies sorted from highest to lowest: {movies_context}
 
