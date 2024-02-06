@@ -27,6 +27,7 @@ const Results = () => {
                   width={250}
                   height={200}
                   className='rounded-md w-full'
+                  priority
                 />
               )}
 
@@ -101,7 +102,7 @@ const MovieCard = ({
         />
       )}
       <div className='max-w-sm space-y-2'>
-        <h3 className='text-4xl'>{title}</h3>
+        <h3 className='text-2xl md:text-3xl'>{title}</h3>
         <p>{description}</p>
       </div>
     </div>
