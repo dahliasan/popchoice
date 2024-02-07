@@ -38,7 +38,7 @@ export function RadioButtonField({
             <RadioGroup
               onValueChange={field.onChange}
               defaultValue={field.value}
-              className='flex gap-2 items-center'
+              className='flex gap-2 items-center flex-wrap md:flex-nowrap'
             >
               {fieldData.options.map((option, index) => (
                 <FormItem key={index} className=''>
