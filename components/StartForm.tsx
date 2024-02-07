@@ -53,16 +53,15 @@ export default function StartForm() {
       .map((key) => `${values[key]}`)
       .join('\n')
 
-    // Add to submissions
-    setSubmissions([...submissions, answer])
-
     if (currentPerson < Number(numberOfPeople)) {
+      // Add to submissions
+      setSubmissions([...submissions, answer])
       setCurrentPerson((prev) => prev + 1)
       return form.reset()
     }
 
     // 3. Send the answer to the AI
-    const completion = await complete(submissions.join('\n\n'))
+    const completion = await complete([...submissions, answer].join('\n\n'))
 
     if (completion) {
       const results = JSON.parse(completion)
