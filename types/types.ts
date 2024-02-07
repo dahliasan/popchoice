@@ -35,7 +35,8 @@ export const movieResultSchema = z.object({
   reason: z.string(),
 })
 
-export type MovieResult = z.infer<typeof movieResultSchema>
+export type MovieResult = z.infer<typeof movieResultSchema> &
+  z.infer<typeof movieMetadataSchema>
 
 //  {
 //       "adult": false,
