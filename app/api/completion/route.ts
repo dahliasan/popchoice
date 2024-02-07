@@ -43,8 +43,6 @@ export async function POST(req: NextRequest) {
 
   console.log('✅', response)
 
-  // https://image.tmdb.org/t/p/w500${data.results[0].poster_path}
-
   const movieResults: MovieResult[] = []
 
   for (const movie of response) {
@@ -66,10 +64,10 @@ export async function POST(req: NextRequest) {
       : undefined
 
     const movieResult: MovieResult = {
-      title,
-      releaseYear: release_date,
+      releaseYear: new Date(release_date).getFullYear().toString(),
       posterUrl,
       reason,
+      ...metadata,
     }
 
     movieResults.push(movieResult)
