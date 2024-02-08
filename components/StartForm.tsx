@@ -16,6 +16,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { useCompletionStore } from '@/lib/store'
 
 import { useState } from 'react'
+import { Loading } from './Loading'
 
 const formObject = fields.reduce<Record<string, z.ZodString>>((acc, field) => {
   acc[field.id] = z.string()
@@ -33,7 +34,8 @@ const defaultValues = fields.reduce<Record<string, string>>((acc, field) => {
 }, {})
 
 export default function StartForm() {
-  const { complete, isLoading } = useCompletion()
+  const [isLoading, setIsLoading] = useState(false)
+  const { complete, isLoading: isCompletionLoading } = useCompletion()
   const searchParams = useSearchParams()
   const numberOfPeople = searchParams.get('numberOfPeople')
   const router = useRouter()
@@ -64,41 +66,58 @@ export default function StartForm() {
     const completion = await complete([...submissions, answer].join('\n\n'))
 
     if (completion) {
+      setIsLoading(true)
       const results = JSON.parse(completion)
       useCompletionStore.setState({ results })
+      form.reset()
       router.push('/results')
     }
-
-    form.reset()
   }
 
   return (
-    <Form {...form}>
-      <h3 className='text-center'>{currentPerson}</h3>
-      <form onSubmit={form.handleSubmit(onSubmitFinal)} className='space-y-6'>
-        {fields.map((field, index) => {
-          switch (field.type) {
-            case 'text':
-              return <InputField key={index} fieldData={field} form={form} />
-            case 'textarea':
-              return <TextAreaField key={index} fieldData={field} form={form} />
-            case 'radio':
-              return (
-                <RadioButtonField key={index} fieldData={field} form={form} />
-              )
-            default:
-              return null
-          }
-        })}
+    <>
+      {isLoading || isCompletionLoading ? (
+        <Loading />
+      ) : (
+        <Form {...form}>
+          <h3 className='text-center text-sm'>Person {currentPerson}</h3>
+          <form
+            onSubmit={form.handleSubmit(onSubmitFinal)}
+            className='space-y-6'
+          >
+            {fields.map((field, index) => {
+              switch (field.type) {
+                case 'text':
+                  return (
+                    <InputField key={index} fieldData={field} form={form} />
+                  )
+                case 'textarea':
+                  return (
+                    <TextAreaField key={index} fieldData={field} form={form} />
+                  )
+                case 'radio':
+                  return (
+                    <RadioButtonField
+                      key={index}
+                      fieldData={field}
+                      form={form}
+                    />
+                  )
+                default:
+                  return null
+              }
+            })}
 
-        <Button type='submit' className='w-full' disabled={isLoading}>
-          {renderSubmitButtonText(
-            isLoading,
-            currentPerson === Number(numberOfPeople)
-          )}
-        </Button>
-      </form>
-    </Form>
+            <Button type='submit' className='w-full' disabled={isLoading}>
+              {renderSubmitButtonText(
+                isLoading,
+                currentPerson === Number(numberOfPeople)
+              )}
+            </Button>
+          </form>
+        </Form>
+      )}
+    </>
   )
 }
 
