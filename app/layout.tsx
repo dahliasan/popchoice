@@ -2,6 +2,9 @@ import type { Metadata } from 'next'
 import { Carter_One, Roboto_Slab } from 'next/font/google'
 import './globals.css'
 import { cn } from '@/lib/utils'
+import { Github } from 'lucide-react'
+import Link from 'next/link'
+import { Button } from '@/components/ui/button'
 
 const robotoSlab = Roboto_Slab({
   subsets: ['latin'],
@@ -35,6 +38,17 @@ export default function RootLayout({
         )}
       >
         {children}
+        <Link
+          href='https://github.com/dahliasan/popchoice'
+          className='fixed bottom-2 right-1'
+        >
+          <Button
+            variant={'ghost'}
+            className='flex gap-1 items-center text-xs bg-indigo-700 border-indigo-600 rounded-full'
+          >
+            <Github /> view code
+          </Button>
+        </Link>
       </body>
     </html>
   )
