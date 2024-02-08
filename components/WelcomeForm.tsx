@@ -14,10 +14,11 @@ export default function WelcomeForm() {
   return (
     <>
       <div className='grid w-full max-w-sm items-center gap-2 sapce-y-2'>
-        <div>
+        <div className='text-center'>
           <Label htmlFor='pax'>How many people are watching the movie?</Label>
           <Input
             id='pax'
+            className='text-center'
             placeholder='5'
             defaultValue={numberOfPeople}
             onChange={(e) => setNumberOfPeople(e.target.value)}
